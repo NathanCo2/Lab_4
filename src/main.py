@@ -20,12 +20,14 @@ from motor_controller_Nathan import MotorController
 import utime
 
 
-def task1_fun(setpoint, gain):
+def task1_fun(shares):
     """!
     Task which runs motor 1. Initiliazes then calls run()
     @param setpoint Defines the desired setpoint of the controller
     @param gain Defines the proportional gain of the controller
     """
+    my_shares, the_queue = shares
+    
     
     # Initialize motor drivers and encoders
     # set up timer 8 for encoder 2
@@ -52,14 +54,14 @@ def task1_fun(setpoint, gain):
         Deitch.run()
         yield
 
-def task2_fun(setpoint, gain):
+def task2_fun(shares):
     """!
     Task which runs motor 2. Initializes then calls run()
     @param setpoint Defines the desired setpoint of the controller
     @param gain Defines the proportional gain of the controller
     """
     # Get references to the share and queue which have been passed to this task
-    the_share, the_queue = shares
+    my_share, the_queue = shares
     
     # Initialize motor drivers and encoders
     # Set up timer 4 for encoder 1
@@ -93,23 +95,30 @@ if __name__ == "__main__":
     print("Testing two motor at once"
           "Press Ctrl-C to stop and show diagnostics.")
     
+    # Create a share and a queue to test function and diagnostic printouts
+    share0 = task_share.Share('h', thread_protect=False, name="Share 0")
+    # Creates a shared signed short integer (16 bit: -32780 to 32767) that is
+    # not thread protected (multiple taks can access at once) and named for debugging
+    
+    q0 = task_share.Queue('L', 16, thread_protect=False, overwrite=False,
+                          name="Queue 0")
+    
     # Create the tasks. If trace is enabled for any task, memory will be
     # allocated for state transition tracing, and the application will run out
     # of memory after a while and quit. Therefore, use tracing only for 
     # debugging and set trace to False when it's not needed
     
-    gain1 = 0.2
-    setpoint1 = 36000
-    my_share.put(gain1, setpoint1)
+    gain = 0.2
+    setpoint = 36000
     
-    gain2 = 0.2
-    setpoint2 = -36000
-    my_share.put(gain2, setpoint2)
+    gain = 0.2
+    setpoint = -36000
+    
     
     task1 = cotask.Task(task1_fun, name="Task_1", priority=1, period=400,
-                        profile=True, trace=False, gain1, setpoint1)
+                        profile=True, trace=False, shares=(share0, q0))
     task2 = cotask.Task(task2_fun, name="Task_2", priority=2, period=1500,
-                        profile=True, trace=False, gain2, setpoint2)
+                        profile=True, trace=False, shares=(share0, q0))
     cotask.task_list.append(task1)
     cotask.task_list.append(task2)
 
