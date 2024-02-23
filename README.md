@@ -14,6 +14,7 @@ The objective of this lab is to develop a real-time scheduler and test its perfo
 ![image0](https://github.com/NathanCo2/Lab_4/assets/156122419/4ae39982-bd4c-48e7-91cb-c5445c1f4d76)
 
 Figure 1: Plot of Time, s, and Position, volts, for Motor 1 and Motor 2
+
 ![image1](https://github.com/NathanCo2/Lab_4/assets/156122419/ad1a4b9d-0043-488f-a7cb-f872176cb579)
 
 Figure 2: Zoomed-in Plot of Time, s, and Position, volts, for Motor 1 and Motor 2 from Figure 1
