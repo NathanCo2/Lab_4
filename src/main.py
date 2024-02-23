@@ -26,7 +26,8 @@ def task1_fun(shares):
     @param setpoint Defines the desired setpoint of the controller
     @param gain Defines the proportional gain of the controller
     """
-    my_shares, the_queue = shares
+    # Get references to the gain and setpoint which have been passed to this task
+    gain, setpoint = shares
     
     
     # Initialize motor drivers and encoders
@@ -49,10 +50,13 @@ def task1_fun(shares):
     Jerry.zero()
     # Create motor controller
     Deitch = MotorController(gain, setpoint, Tom.set_duty_cycle, Jerry.read)
-    
-    while True:
+    print("start")
+    for i in range(2):
         Deitch.run()
         yield
+    print("done 1")
+    Tom.set_duty_cycle(0)
+    return Deitch.controller_response
 
 def task2_fun(shares):
     """!
@@ -60,8 +64,8 @@ def task2_fun(shares):
     @param setpoint Defines the desired setpoint of the controller
     @param gain Defines the proportional gain of the controller
     """
-    # Get references to the share and queue which have been passed to this task
-    my_share, the_queue = shares
+    # Get references to the gain and setpoint which have been passed to this task
+    gain, setpoint = shares
     
     # Initialize motor drivers and encoders
     # Set up timer 4 for encoder 1
@@ -95,32 +99,26 @@ if __name__ == "__main__":
     print("Testing two motor at once"
           "Press Ctrl-C to stop and show diagnostics.")
     
-    # Create a share and a queue to test function and diagnostic printouts
-    share0 = task_share.Share('h', thread_protect=False, name="Share 0")
-    # Creates a shared signed short integer (16 bit: -32780 to 32767) that is
-    # not thread protected (multiple taks can access at once) and named for debugging
-    
-    q0 = task_share.Queue('L', 16, thread_protect=False, overwrite=False,
-                          name="Queue 0")
-    
+
     # Create the tasks. If trace is enabled for any task, memory will be
     # allocated for state transition tracing, and the application will run out
     # of memory after a while and quit. Therefore, use tracing only for 
     # debugging and set trace to False when it's not needed
+    param1 = (0.2, 36000) # contains kp and setpoint
+    param2 = (0.2, -36000) # contains kp and setpoint
     
-    gain = 0.2
-    setpoint = 36000
+    gain1 = 0.05
+    setpoint1 = 36000
     
-    gain = 0.2
-    setpoint = -36000
+    gain2 = 0.05
+    setpoint2 = -36000
     
-    
-    task1 = cotask.Task(task1_fun, name="Task_1", priority=1, period=400,
-                        profile=True, trace=False, shares=(share0, q0))
-    task2 = cotask.Task(task2_fun, name="Task_2", priority=2, period=1500,
-                        profile=True, trace=False, shares=(share0, q0))
+    task1 = cotask.Task(task1_fun, name="Task_1", priority=1, period=100,
+                        profile=True, trace=False, shares=(gain1, setpoint1))
+    task2 = cotask.Task(task2_fun, name="Task_2", priority=2, period=150,
+                        profile=True, trace=False, shares=(gain2, setpoint2))
     cotask.task_list.append(task1)
-    cotask.task_list.append(task2)
+    #cotask.task_list.append(task2)
 
     # Run the memory garbage collector to ensure memory is as defragmented as
     # possible before the real-time scheduler is started
@@ -130,6 +128,9 @@ if __name__ == "__main__":
     while True:
         try:
             cotask.task_list.pri_sched()
+        except StopIteration as e:
+            deitch_instance = e.value
+            print("success")
         except KeyboardInterrupt:
             break
     
@@ -138,3 +139,10 @@ if __name__ == "__main__":
     print(task_share.show_all())
     print(task1.get_trace())
     print('')
+    
+    
+    # pass information to laptop for plotting
+    print("Motor 1 Response")
+    deitch_instance.controller_response()
+    print("Motor 2 Response")
+    AA.controller_response()
