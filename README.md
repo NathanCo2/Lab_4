@@ -12,7 +12,7 @@ The objective of this lab is to develop a real-time scheduler and test its perfo
 
 Before testing both of the motors, the motor task was created and tested with a flywheel, printing the results and plotting the step response plots. The objective was to run the task at a slower rate until the controller's performance worsened, which can be seen in Figure 1. To obtain the slowest rate at which the performance is not significantly worsened, the period was adjusted until an oscillation occurred. 
 
-[IMAGE HERE]
+![image3](https://github.com/NathanCo2/Lab_4/assets/156122419/eb932449-82f5-4941-acce-ae79ec47e3e9)
 
 Figure 1: Plot of Time, s, and Position, volts, for Controlled Performance using Flywheel. The left image shows the optimal response rate and the image to the right shows the poor response rate. The slowest rate at which the performance is not significantly worse is _.  
 
