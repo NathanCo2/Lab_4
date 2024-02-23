@@ -39,8 +39,10 @@ def plot_example(plot_axes, plot_canvas, xlabel, ylabel):
     @param ylabel The label for the plot's vertical axis
     """
     #Clearing the array
-    xaxis_times.clear()
-    yaxis_motor_positions.clear() 
+    xaxis_times1.clear()
+    yaxis_motor_positions1.clear() 
+    xaxis_times2.clear()
+    yaxis_motor_positions2.clear() 
     go1 = False
     go2 = False
     
@@ -56,35 +58,51 @@ def plot_example(plot_axes, plot_canvas, xlabel, ylabel):
                 go1 = True
             if line == 'done 2':
                 go2 = True
-
+        
+        # Reinit go1 and go2 to be used later
+        go1 = False
+        go2 = False
+        
         # Read and discard any data in the input buffer
         while ser.in_waiting > 0:
             print(ser.readline().decode('utf-8'))
         print("Serial input buffer cleared.")    
         ser.write(b'\x03')
+        
         while ser.in_waiting == 0:
             continue
         
         #read output from microcontroller
         for line in ser:
             data = ser.readline().decode('utf-8').strip()
-            
+            if data == 'Motor 1 Response':
+                go1 = True
+            if data == 'Motor 2 Response':
+                go2 = True
+                go1 = False
             try:
                 # Split the received data into time and voltage
                 time, voltage = map(float, data.split(','))
-                xaxis_times.append(time)
-                yaxis_motor_positions.append(voltage)
+                if go1 == True:
+                    xaxis_times1.append(time)
+                    yaxis_motor_positions1.append(voltage)
+                if go2 == True:
+                    xaxis_times2.append(time)
+                    yaxis_motor_positions2.append(voltage)
                 
             except ValueError:
                 print("Error parsing data:", data)
                 continue
         
         #Checking Array
-        print(xaxis_times)
-        print(yaxis_motor_positions)
+        print(xaxis_times1)
+        print(yaxis_motor_positions1)
+        print(xaxis_times2)
+        print(yaxis_motor_positions2)
        
         # plotting the experimental curves
-        plot_axes.plot(xaxis_times, yaxis_motor_positions)
+        plot_axes.plot(xaxis_times1, yaxis_motor_positions1)
+        plot_axes.plot(xaxis_times2, yaxis_motor_positions2)
         plot_axes.set_xlabel(xlabel)
         plot_axes.set_ylabel(ylabel)
         plot_axes.grid(True)
@@ -143,8 +161,10 @@ def tk_matplot(plot_function, xlabel, ylabel, title):
 # file is imported as a module by some other main program
 if __name__ == "__main__":
     #Creates an empty array
-    xaxis_times = []
-    yaxis_motor_positions = []
+    xaxis_times1 = []
+    yaxis_motor_positions1 = []
+    xaxis_times2 = []
+    yaxis_motor_positions2 = []
     
     tk_matplot(plot_example,
                xlabel="Time (ms)",
