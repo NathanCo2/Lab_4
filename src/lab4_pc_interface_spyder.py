@@ -41,43 +41,34 @@ def plot_example(plot_axes, plot_canvas, xlabel, ylabel):
     #Clearing the array
     xaxis_times.clear()
     yaxis_motor_positions.clear() 
-    go = False
+    go1 = False
+    go2 = False
     
     # Importing data (time, voltage) from the mircontroller
-    with serial.Serial(port='COM6', baudrate=115200, timeout=1) as ser:
+    with serial.Serial(port='COM5', baudrate=115200, timeout=1) as ser:
         ser.write(b'\x03')
         ser.write(b'\x04')
         #ser.write(b'import main\n')
-        while not go:
+        while not go1 or not go2:
             line = ser.readline().decode('utf-8').strip()
             print(line)
-            if line == 'Receiving':
-                go = True
+            if line == 'done 1':
+                go1 = True
+            if line == 'done 2':
+                go2 = True
 
         # Read and discard any data in the input buffer
         while ser.in_waiting > 0:
             print(ser.readline().decode('utf-8'))
         print("Serial input buffer cleared.")    
-       
-        # Awaiting User input
-        user_entry = input("Enter a gain value: ")
-        # send user input to microcontroller
-        ser.write(user_entry.encode('utf-8'))
-        
-        # Read and discard any data in the input buffer
-        while ser.in_waiting > 0:
-            print(ser.readline().decode('utf-8'))
-        print("Serial input buffer cleared.")    
-        
+        ser.write(b'\x03')
         while ser.in_waiting == 0:
             continue
         
         #read output from microcontroller
         for line in ser:
             data = ser.readline().decode('utf-8').strip()
-            #print(type(data))
-            #new_time = []
-            #new_voltage = []
+            
             try:
                 # Split the received data into time and voltage
                 time, voltage = map(float, data.split(','))

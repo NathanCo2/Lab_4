@@ -50,11 +50,11 @@ def task1_fun(shares):
     Jerry.zero()
     # Create motor controller
     Deitch = MotorController(gain, setpoint, Tom.set_duty_cycle, Jerry.read, time, val)
-    print("start")
+    #print("start")
     for i in range(200):
         Deitch.run()
         yield
-    print("done 1")
+    #print("done 1")
     Tom.set_duty_cycle(0)
     while True: # once done twiddle them thumbs
         yield
@@ -88,11 +88,11 @@ def task2_fun(shares):
     Jess.zero()
     # Create motor controller
     AA = MotorController(gain, setpoint, Jackie.set_duty_cycle, Jess.read, time, val)
-    print("start")
+    #print("start")
     for i in range(200):
         AA.run()
         yield
-    print("done 2")
+    #print("done 2")
     Jackie.set_duty_cycle(0)
     
     while True:
@@ -102,8 +102,8 @@ def task2_fun(shares):
 # tasks run until somebody presses ENTER, at which time the scheduler stops and
 # printouts show diagnostic information about the tasks, share, and queue.
 if __name__ == "__main__":
-    print("Testing two motor at once"
-          "Press Ctrl-C to stop and show diagnostics.")
+    #print("Testing two motor at once"
+    #      "Press Ctrl-C to stop and show diagnostics.")
     
     # Create variables to pass to tasks. queues are for printing data, gain and setpoint are input
     time1 = cqueue.FloatQueue(200)
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     # possible before the real-time scheduler is started
     gc.collect()
 
-    print(cotask.task_list)
+    #print(cotask.task_list)
     # Run the scheduler with the chosen scheduling algorithm. Quit if ^C pressed
     while True:
         try:
@@ -143,10 +143,10 @@ if __name__ == "__main__":
             break
         
     # Print a table of task data and a table of shared information data
-    print('\n' + str (cotask.task_list))
-    print(task_share.show_all())
-    print(task1.get_trace())
-    print('')
+    #print('\n' + str (cotask.task_list))
+    #print(task_share.show_all())
+    #print(task1.get_trace())
+    #print('')
     
     
     # pass information to laptop for plotting
@@ -161,13 +161,13 @@ if __name__ == "__main__":
     for i in range(len(time_offsetA)):
         print(f"{time_offsetA[i]}, {valA[i]}")
     
-    print("Motor 2 Response")
-    timeB = []
-    valB = []
-    while time2.any():#Checks if anything is the Queue and emptying it
-        timeB.append(time2.get()) #Gets single value from queue
-        valB.append(val2.get())
-    firsttimeB = timeB[0]
-    time_offsetB = [t - firsttimeB for t in timeB]
-    for i in range(len(time_offsetB)):
-        print(f"{time_offsetB[i]}, {valB[i]}")
+    #print("Motor 2 Response")
+    #timeB = []
+    #valB = []
+    #while time2.any():#Checks if anything is the Queue and emptying it
+    #    timeB.append(time2.get()) #Gets single value from queue
+    #    valB.append(val2.get())
+    #firsttimeB = timeB[0]
+    #time_offsetB = [t - firsttimeB for t in timeB]
+    #for i in range(len(time_offsetB)):
+    #    print(f"{time_offsetB[i]}, {valB[i]}")
