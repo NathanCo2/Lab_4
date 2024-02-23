@@ -16,8 +16,9 @@ import cotask
 import task_share
 from motor_driver import MotorDriver
 from encoder_reader import Encoder
-from motor_controller_Nathan import MotorController
+from motor_controller_4 import MotorController
 import utime
+import cqueue
 
 
 def task1_fun(shares):
@@ -27,8 +28,7 @@ def task1_fun(shares):
     @param gain Defines the proportional gain of the controller
     """
     # Get references to the gain and setpoint which have been passed to this task
-    gain, setpoint = shares
-    
+    gain, setpoint, time, val = shares
     
     # Initialize motor drivers and encoders
     # set up timer 8 for encoder 2
@@ -49,14 +49,15 @@ def task1_fun(shares):
     Tom = MotorDriver(pinc1, pina0, pina1, TIM5)
     Jerry.zero()
     # Create motor controller
-    Deitch = MotorController(gain, setpoint, Tom.set_duty_cycle, Jerry.read)
+    Deitch = MotorController(gain, setpoint, Tom.set_duty_cycle, Jerry.read, time, val)
     print("start")
-    for i in range(2):
+    for i in range(200):
         Deitch.run()
         yield
     print("done 1")
     Tom.set_duty_cycle(0)
-    return Deitch.controller_response
+    while True: # once done twiddle them thumbs
+        yield
 
 def task2_fun(shares):
     """!
@@ -99,13 +100,11 @@ if __name__ == "__main__":
     print("Testing two motor at once"
           "Press Ctrl-C to stop and show diagnostics.")
     
-
-    # Create the tasks. If trace is enabled for any task, memory will be
-    # allocated for state transition tracing, and the application will run out
-    # of memory after a while and quit. Therefore, use tracing only for 
-    # debugging and set trace to False when it's not needed
-    param1 = (0.2, 36000) # contains kp and setpoint
-    param2 = (0.2, -36000) # contains kp and setpoint
+    # Create variables to pass to tasks. queues are for printing data, gain and setpoint are input
+    time1 = cqueue.FloatQueue(200)
+    val1 = cqueue.FloatQueue(200)
+    time2 = cqueue.FloatQueue(200)
+    val2 = cqueue.FloatQueue(200)
     
     gain1 = 0.05
     setpoint1 = 36000
@@ -113,10 +112,15 @@ if __name__ == "__main__":
     gain2 = 0.05
     setpoint2 = -36000
     
+    # Create the tasks. If trace is enabled for any task, memory will be
+    # allocated for state transition tracing, and the application will run out
+    # of memory after a while and quit. Therefore, use tracing only for 
+    # debugging and set trace to False when it's not needed
+    
     task1 = cotask.Task(task1_fun, name="Task_1", priority=1, period=100,
-                        profile=True, trace=False, shares=(gain1, setpoint1))
+                        profile=True, trace=False, shares=(gain1, setpoint1, time1, val1))
     task2 = cotask.Task(task2_fun, name="Task_2", priority=2, period=150,
-                        profile=True, trace=False, shares=(gain2, setpoint2))
+                        profile=True, trace=False, shares=(gain2, setpoint2, time2, val2))
     cotask.task_list.append(task1)
     #cotask.task_list.append(task2)
 
@@ -128,12 +132,9 @@ if __name__ == "__main__":
     while True:
         try:
             cotask.task_list.pri_sched()
-        except StopIteration as e:
-            deitch_instance = e.value
-            print("success")
         except KeyboardInterrupt:
             break
-    
+        
     # Print a table of task data and a table of shared information data
     print('\n' + str (cotask.task_list))
     print(task_share.show_all())
@@ -143,6 +144,23 @@ if __name__ == "__main__":
     
     # pass information to laptop for plotting
     print("Motor 1 Response")
-    deitch_instance.controller_response()
+    timeA = []
+    valA = []
+    while time1.any():#Checks if anything is the Queue and emptying it
+        timeA.append(time1.get()) #Gets single value from queue
+        valA.append(val1.get())
+    firsttimeA = timeA[0]
+    time_offsetA = [t - firsttimeA for t in timeA]
+    for i in range(len(time_offsetA)):
+        print(f"{time_offsetA[i]}, {valA[i]}")
+    
     print("Motor 2 Response")
-    AA.controller_response()
+    timeB = []
+    valB = []
+    while time2.any():#Checks if anything is the Queue and emptying it
+        timeB.append(time2.get()) #Gets single value from queue
+        valB.append(val2.get())
+    firsttimeB = timeB[0]
+    time_offsetB = [t - firsttimeB for t in timeB]
+    for i in range(len(time_offsetB)):
+        print(f"{time_offsetB[i]}, {valB[i]}")

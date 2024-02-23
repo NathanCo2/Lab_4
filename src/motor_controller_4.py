@@ -3,8 +3,8 @@
 
 This program demonstrates the development of a class called MotorController to that
 perform closed-loop proportional control. This code was tested an ranwith the Motor
-Driver class and Encoder class developed in Lab 1 to examine if the code was running
-correctly. 
+Driver class and Encoder class developed in the previous labs to examine if the code
+was running correctly. 
 
 @author Jessica Perez, Jacquelyn Banh, and Nathan Chapman
 @date   2024-02-13 Original program, based on example from above listed source
@@ -21,7 +21,7 @@ class MotorController:
     This class implements the Motor Controller for an ME405 kit. 
     """
 
-    def __init__ (self, gain, setpoint, setdutycycle_f, getactual_f):
+    def __init__ (self, gain, setpoint, setdutycycle_f, getactual_f, timequeue, valqueue):
         """! 
         Creates an encoder object that can be used to measure
         the position of a motor
@@ -29,6 +29,8 @@ class MotorController:
         @param setpoint = desired angle of motor
         @param setdutycycle_f = function to set duty cycle output
         @param getactual_f = function to read actual value
+        @param ge
+        @param ge
         """
         self.setpoint = setpoint
         self.gain = gain
@@ -36,8 +38,8 @@ class MotorController:
         self.err = 0
         self.setdutycycle = setdutycycle_f
         self.getactual = getactual_f
-        self.timequeue = cqueue.FloatQueue(200) # queue for time
-        self.valqueue = cqueue.FloatQueue(200) # queue for values
+        self.timequeue = timequeue # queue for time
+        self.valqueue = valqueue # queue for values
         
     def run(self):
         """!
