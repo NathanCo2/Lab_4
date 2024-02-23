@@ -54,7 +54,7 @@ def task1_fun(shares):
     for i in range(200):
         Deitch.run()
         yield
-    #print("done 1")
+    print("done 1")
     Tom.set_duty_cycle(0)
     while True: # once done twiddle them thumbs
         yield
@@ -92,7 +92,7 @@ def task2_fun(shares):
     for i in range(200):
         AA.run()
         yield
-    #print("done 2")
+    print("done 2")
     Jackie.set_duty_cycle(0)
     
     while True:
@@ -112,9 +112,9 @@ if __name__ == "__main__":
     val2 = cqueue.FloatQueue(200)
     
     gain1 = 0.05
-    setpoint1 = -36000
+    setpoint1 = 36000
     
-    gain2 = 0.2
+    gain2 = 0.05
     setpoint2 = 36000
     
     # Create the tasks. If trace is enabled for any task, memory will be
@@ -122,9 +122,9 @@ if __name__ == "__main__":
     # of memory after a while and quit. Therefore, use tracing only for 
     # debugging and set trace to False when it's not needed
     
-    task1 = cotask.Task(task1_fun, name="Task_1", priority=2, period=25,
+    task1 = cotask.Task(task1_fun, name="Task_1", priority=2, period=100,
                         profile=True, trace=False, shares=(gain1, setpoint1, time1, val1))
-    task2 = cotask.Task(task2_fun, name="Task_2", priority=1, period=50,
+    task2 = cotask.Task(task2_fun, name="Task_2", priority=1, period=100,
                         profile=True, trace=False, shares=(gain2, setpoint2, time2, val2))
     
     cotask.task_list.append(task1)
@@ -150,6 +150,7 @@ if __name__ == "__main__":
     
     
     # pass information to laptop for plotting
+    print(":)")
     print("Motor 1 Response")
     timeA = []
     valA = []
@@ -160,14 +161,14 @@ if __name__ == "__main__":
     time_offsetA = [t - firsttimeA for t in timeA]
     for i in range(len(time_offsetA)):
         print(f"{time_offsetA[i]}, {valA[i]}")
-    
-    #print("Motor 2 Response")
-    #timeB = []
-    #valB = []
-    #while time2.any():#Checks if anything is the Queue and emptying it
-    #    timeB.append(time2.get()) #Gets single value from queue
-    #    valB.append(val2.get())
-    #firsttimeB = timeB[0]
-    #time_offsetB = [t - firsttimeB for t in timeB]
-    #for i in range(len(time_offsetB)):
-    #    print(f"{time_offsetB[i]}, {valB[i]}")
+    print(":)")
+    print("Motor 2 Response")
+    timeB = []
+    valB = []
+    while time2.any():#Checks if anything is the Queue and emptying it
+        timeB.append(time2.get()) #Gets single value from queue
+        valB.append(val2.get())
+    firsttimeB = timeB[0]
+    time_offsetB = [t - firsttimeB for t in timeB]
+    for i in range(len(time_offsetB)):
+        print(f"{time_offsetB[i]}, {valB[i]}")

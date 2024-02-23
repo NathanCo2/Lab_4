@@ -75,11 +75,15 @@ def plot_example(plot_axes, plot_canvas, xlabel, ylabel):
         #read output from microcontroller
         for line in ser:
             data = ser.readline().decode('utf-8').strip()
+            print(data)
             if data == 'Motor 1 Response':
                 go1 = True
+                go2 = False
+                print("go 1 true")
             if data == 'Motor 2 Response':
                 go2 = True
                 go1 = False
+                print("go 2 true")
             try:
                 # Split the received data into time and voltage
                 time, voltage = map(float, data.split(','))
