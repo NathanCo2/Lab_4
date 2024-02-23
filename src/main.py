@@ -1,9 +1,10 @@
 """!
-@file basic_tasks.py
+@file main.py
     This file contains a demonstration program that runs some tasks, an
     inter-task shared variable, and a queue. The tasks don't really @b do
     anything; the example just shows how these elements are created and run.
 
+@author Jessica Perez, Jacquelyn Banh, and Nathan Chapman
 @author JR Ridgely
 @date   2021-Dec-15 JRR Created from the remains of previous example
 @copyright (c) 2015-2021 by JR Ridgely and released under the GNU
