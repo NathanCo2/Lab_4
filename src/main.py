@@ -122,7 +122,7 @@ if __name__ == "__main__":
     # of memory after a while and quit. Therefore, use tracing only for 
     # debugging and set trace to False when it's not needed
     
-    task1 = cotask.Task(task1_fun, name="Task_1", priority=2, period=50,
+    task1 = cotask.Task(task1_fun, name="Task_1", priority=2, period=25,
                         profile=True, trace=False, shares=(gain1, setpoint1, time1, val1))
     task2 = cotask.Task(task2_fun, name="Task_2", priority=1, period=50,
                         profile=True, trace=False, shares=(gain2, setpoint2, time2, val2))
