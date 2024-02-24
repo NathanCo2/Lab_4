@@ -1,0 +1,23 @@
+var NAVTREEINDEX0 =
+{
+"annotated.html":[0,0],
+"classes.html":[0,1],
+"classmotor__controller__4_1_1_motor_controller.html":[0,0,0,0],
+"classmotor__controller__4_1_1_motor_controller.html#a689605421c561a7375467939de3ca434":[0,0,0,0,3],
+"classmotor__controller__4_1_1_motor_controller.html#a6d02e377977b0e9e543a334afe29b2c6":[0,0,0,0,1],
+"classmotor__controller__4_1_1_motor_controller.html#a8153f9ec0cdc65bac6e7ebc4ecd38bd8":[0,0,0,0,0],
+"classmotor__controller__4_1_1_motor_controller.html#aa684b4c31ac6d6d2e5374346e0ee94f0":[0,0,0,0,2],
+"classmotor__controller__4_1_1_motor_controller.html#abb458967d220adb27402abc1e1770bbb":[0,0,0,0,4],
+"dir_68267d1309a1af8e8297ef4c3efbcdba.html":[1,0,0],
+"files.html":[1,0],
+"functions.html":[0,2,0],
+"functions_func.html":[0,2,1],
+"index.html":[],
+"lab4__pc__interface__spyder_8py.html":[1,0,0,0],
+"lab4__pc__interface__spyder_8py.html#a031eded79f1ce8680755b5c4df72801a":[1,0,0,0,1],
+"lab4__pc__interface__spyder_8py.html#a3b61ffdc351697d0761ce90bf19a4e7d":[1,0,0,0,0],
+"main_8py.html":[1,0,0,1],
+"main_8py.html#a3604ba3cb5e82f0236d3c20903d2c1db":[1,0,0,1,0],
+"main_8py.html#a99683bfda5aff485862a4eb1e59ed25e":[1,0,0,1,1],
+"pages.html":[]
+};
