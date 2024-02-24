@@ -16,7 +16,7 @@ Before testing both of the motors, the motor task was created and tested with a 
 
 Figure 1: Plot of Time, s, and Position, volts, for Controlled Performance using Flywheel. The left image shows the optimal response rate and the image to the right shows the poor response rate. The slowest rate at which the performance is not significantly worse is 25.  
 
-To compare the positions between the two motors, both positions were captured and plotted in Figure 2 and Figure 3. From the plot when onen motor control task was run too slowly we can see
+To compare the positions between the two motors, both positions were captured and plotted in Figure 2 and Figure 3. From the plots, we can see the effect of adjusting the period, with the lower period resulting in less overshoot. From testing, when one motor control task was run too slowly we can see that there was a large error where the motor response would oscillate between overshoot and undershoot being unable to reach a steady state. A recommended speed at which the motor task should be running is fast enough to obtain values to plot a linear pattern. 
 
 ![image0](https://github.com/NathanCo2/Lab_4/assets/156122419/4ae39982-bd4c-48e7-91cb-c5445c1f4d76)
 
@@ -25,5 +25,3 @@ Figure 2: Plot of Time, s, and Position, volts, for Motor 1 and Motor 2
 ![image1](https://github.com/NathanCo2/Lab_4/assets/156122419/ad1a4b9d-0043-488f-a7cb-f872176cb579)
 
 Figure 3: Zoomed-in Plot of Time, s, and Position, volts, for Motor 1 and Motor 2 from Figure 
-
-Before 
