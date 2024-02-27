@@ -1,5 +1,5 @@
 """!
-@file lab3_pc_interface.py
+@file lab4_pc_interface_spyder.py
 
 Run real or simulated dynamic response tests and plot the results. This program
 demonstrates a way to make a simple GUI with a plot in it. It uses Tkinter, an
@@ -85,6 +85,7 @@ def plot_example(plot_axes, plot_canvas, xlabel, ylabel):
                 go1 = False
                 print("go 2 true")
             try:
+
                 # Split the received data into time and voltage
                 time, voltage = map(float, data.split(','))
                 if go1 == True:
